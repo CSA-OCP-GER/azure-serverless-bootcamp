@@ -1,6 +1,6 @@
 # Intelligent Cloud Bootcamp - Introduction in serverless applications
 
-Based on a preDay workshop last year at the MS Ignite in Orlando - we provide this bootcamp to get startet with serverless applications. We leverage Technologies like:
+Based on a pre-day workshop last year at the MS Ignite in Orlando - we provide this bootcamp to get startet with serverless applications. We leverage Technologies like:
 
 - Azure Function
 - Azure LogicApps
