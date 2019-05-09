@@ -1,4 +1,17 @@
-# Serverless Pre-Day Workshop
+# Intelligent Cloud Bootcamp - Introduction in serverless applications
+
+Based on a preDay workshop last year at the MS Ignite in Orlando - we provide this bootcamp to get startet with serverless applications. We leverage Technologies like:
+
+- Azure Function
+- Azure LogicApps
+- Azure CosmosDB
+- WebApps
+
+and much more.
+
+The original Git Repro can be found at <>
+
+## Lets dive in the szenario 
 
 <img style="float: right;" height="160" src="https://serverlessoh.azureedge.net/public/ice-cream-2202561_320-circle.jpg" />
 
