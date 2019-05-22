@@ -127,6 +127,7 @@ You or your team must be able to show this function running locally and publishe
 
 1. The final step is publishing this app to Azure.  Kill the terminal (click the trash icon) to stop the runtime, and open the Azure Functions extension.
 1. Click the up-arrow icon in the Functions extension to publish, and select this app in the list.  Choose to **Create New Function App** and give it a *globally* unique name.  Create a new resource group and give it a name, and create a new storage account and give it a name.  Choose any region to publish.
+    >IMPORTANT: Please create the Function in this Lab as an Azure Function bases on a App Service Plan (e.g. S1 Plan). This will make it easier to deploy the needed packages in the Module 3
     
 1. You should see a prompt in the bottom right that the app is publishing.  Once the app is published you should be able to open your subscription and see the function.  You should be able to open the app and this HTTP function you have just created.  Click the **Get function URL** link in the function to get a URL, and validate you can invoke it and it executes in the cloud. (Be sure to append the query parameter)
 
