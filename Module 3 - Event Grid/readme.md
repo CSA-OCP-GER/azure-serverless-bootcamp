@@ -117,6 +117,9 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 
   Make sure you update the `<topic-endpoint>` and `<aeg-sas-key>` with that of your topic from the first step.
 
+__Attention__
+Maybe you need to install the required packages for this code above with the `npm install` command in the terminal window of Visual Studio Code
+
   What we are doing here is taking the body of the HTTP request and making it the data payload of an Event Grid event. Then all we have to do is add our SAS key as a header value and make an HTTP POST to the topic endpoint with our event as the message body.
 
 1. Update the contents of the `function.json` file in the `IceCreamOrder` folder to the following by deleting the GET method from the input binding:
