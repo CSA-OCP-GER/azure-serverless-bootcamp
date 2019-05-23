@@ -60,10 +60,11 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 }
 ```
 ![Parse Json Schema](./images/parse-json-schema.jpg)
-1. Search for `Cosmos Db` and add `Get a document` action, you will first need to create a connection to it.
-1. Select `icecream` as **Database ID**, `products` as **Collection ID**, and select `itemOrdered` token as input to **DocumentId**.
-1. Next, add a new action from either Outlook 365 or Outlook.com, depending on the type of account you have. The name of the action is **Send email with options**.
-1. Add another `Parse JSON` action, this time, use the `Body` output from `Get a document` action as input to **Content**, and use the following sample to generate schema.
+1. After the definition of the schema, please create a new step. To get information out of the Cosmos DB.
+2. Search for `Cosmos Db` and add `Get a document` action, you will first need to create a connection to it.
+3. Select `icecream` as **Database ID**, `products` as **Collection ID**, and select `itemOrdered` token as input to **DocumentId**.
+4. Next, add a new action from either Outlook 365 or Outlook.com, depending on the type of account you have. The name of the action is **Send email with options**.
+5. Add another `Parse JSON` action, this time, use the `Body` output from `Get a document` action as input to **Content**, and use the following sample to generate schema.
 ```json
 {
   "id": "1",
@@ -74,12 +75,14 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 1. Use `email` token as input for **To**, `BFYOC values your feedback` as **Subject**, and `Very satisfied, Satisfied, Neutral, Unsatisfied, Very unsatisfied` for **User Options**. Then, use various tokens available to write a nice e-mail body.
 ![Email with options](./images/email-options.jpg)
 1. Once customer selected an option, it will be captured and send back to Logic App for it to continue it's execution. Let's store it in the Cosmos DB first.
-1. Search and add **Cosmos - Create or update document** action.
-1. Select `icecream` as **Database ID**, `reviews` as **Collection ID**, and the following JSON object as **Doument**.
+1. First Step to store this customer feedback in the Cosmos DB is to create the new container `reviews` - go to the Azrue Portal and add this container to our existing database `icecream`. Have in mind that fixed sizes are not supported via the portal and think about a partion key for your collection.  
+2. After the collection is deployed we can start to add the step to the Logic App. Search and add **Cosmos - Create or update document** action.
+3. Select `icecream` as **Database ID**, `reviews` as **Collection ID**, and the following JSON object as **Document** and don't forget to add your partion key to the json.
 ```json
 {
   "id": "[Use expression editor to insert guid() expression]",
-  "review": "[Selected option token]"
+  "review": "[Selected option token]",
+  "yourKey": "e.g. [Selected option token]
 }
 ```
 
@@ -97,3 +100,4 @@ For example, consider adding a `Condition` action, and create a rule for when cu
 * [Quickstart: Create your first automated workflow with Azure Logic Apps - Azure portal](https://docs.microsoft.com/azure/logic-apps/quickstart-create-first-logic-app-workflow)
 * [Manage mailing list requests with a logic app](https://docs.microsoft.com/azure/logic-apps/tutorial-process-mailing-list-subscriptions-workflow)
 * [Get started with the delay and delay-until actions](https://docs.microsoft.com/azure/connectors/connectors-native-delay)
+* [Learn about Partitioning and horizontal scaling in Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/partition-data)
