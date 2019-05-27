@@ -9,7 +9,7 @@ Based on a pre-day workshop last year at the MS Ignite in Orlando - we provide t
 
 and much more.
 
-The original Git Repro can be found at <>
+The original Git Repro can be found at https://github.com/Azure-Samples/serverless-workshop
 
 ## Lets dive in the szenario 
 
