@@ -11,7 +11,7 @@ and much more.
 
 The original Git Repro can be found at https://github.com/Azure-Samples/serverless-workshop
 
-## Lets dive in the szenario 
+## Lets dive in the scenario 
 
 <img style="float: right;" height="160" src="https://serverlessoh.azureedge.net/public/ice-cream-2202561_320-circle.jpg" />
 
