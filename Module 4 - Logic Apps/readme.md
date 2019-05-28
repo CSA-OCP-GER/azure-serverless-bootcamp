@@ -51,7 +51,8 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 ![Refresh Logic Apps](./images/refresh.jpg)
 1. Once confirmed, switch back to designer by clicking the **Edit** button, and add a `Parse JSON` action by clicking **New step** and search for it.
 1. Use `Data object` as the input to  **Content**.
-1. The easiest way to create the schema is to generate it using a sample, simply click on **Use sample payload to generate schema**, and provide the sample from **module 3**, as shown below.
+1. The easiest way to create the schema is to generate it using a sample, simply click on **Use sample payload to generate schema**, and provide the sample from **module 3**, as shown below
+
 ```json
 {
   "orderId": "1",
@@ -59,12 +60,13 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
   "email": "hello@contoso.com"
 }
 ```
+
 ![Parse Json Schema](./images/parse-json-schema.jpg)
 1. After the definition of the schema, please create a new step. To get information out of the Cosmos DB.
 2. Search for `Cosmos Db` and add `Get a document` action, you will first need to create a connection to it.
 3. Select `icecream` as **Database ID**, `products` as **Collection ID**, and select `itemOrdered` token as input to **DocumentId**.
-4. Next, add a new action from either Outlook 365 or Outlook.com, depending on the type of account you have. The name of the action is **Send email with options**.
-5. Add another `Parse JSON` action, this time, use the `Body` output from `Get a document` action as input to **Content**, and use the following sample to generate schema.
+4. Add another `Parse JSON` action, this time, use the `Body` output from `Get a document` action as input to **Content**, and use the following sample to generate schema
+
 ```json
 {
   "id": "1",
@@ -72,7 +74,10 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
   "price-per-scoop": 3.99
 }
 ```
-1. Use `email` token as input for **To**, `BFYOC values your feedback` as **Subject**, and `Very satisfied, Satisfied, Neutral, Unsatisfied, Very unsatisfied` for **User Options**. Then, use various tokens available to write a nice e-mail body.
+
+1. Next, add a new action from either Outlook 365 or Outlook.com, depending on the type of account you have. The name of the action is **Send email with options**.
+2. 
+3. Use `email` token as input for **To**, `BFYOC values your feedback` as **Subject**, and `Very satisfied, Satisfied, Neutral, Unsatisfied, Very unsatisfied` for **User Options**. Then, use various tokens available to write a nice e-mail body.
 ![Email with options](./images/email-options.jpg)
 1. Once customer selected an option, it will be captured and send back to Logic App for it to continue it's execution. Let's store it in the Cosmos DB first.
 1. First Step to store this customer feedback in the Cosmos DB is to create the new container `reviews` - go to the Azrue Portal and add this container to our existing database `icecream`. Have in mind that fixed sizes are not supported via the portal and think about a partion key for your collection.  
