@@ -1,6 +1,12 @@
 {
-  "azureFunctions.projectRuntime": "beta",
+  "azureFunctions.projectRuntime": "~3",
   "azureFunctions.projectLanguage": "JavaScript",
   "azureFunctions.templateFilter": "Verified",
-  "azureFunctions.preDeployTask": "installExtensions"
+  "azureFunctions.preDeployTask": "func: extensions install",
+  "files.exclude": {
+    "obj": true,
+    "bin": true
+  },
+  "azureFunctions.deploySubpath": ".",
+  "debug.internalConsoleOptions": "neverOpen"
 }
