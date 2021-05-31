@@ -8,11 +8,12 @@ This module will walk you through building and testing your first Azure Function
 
 * A modern laptop running Windows 10, Mac OSX Mac OS X 10.12 or higher
 * Your preferred IDE (integrated development environments) - Visual Studio Code or Visual Studio
+
     > NOTE: While you can complete this entire workshop in any language and editor you prefer, to make applicable to as many operating systems as possible most of the samples and examples will assume VS Code + JavaScript.
+    
+  * If using Visual Studio Code in Windows, OSX, or Linux make sure you have the latest Visual Studio Code version for your OS. You can follow [the **first page** of pre-requisites as described here](https://code.visualstudio.com/tutorials/functions-extension/getting-started){:title="Function extension"}{:target="_blank"} to get the Azure Functions extension configured
 
-    * If using Visual Studio Code in Windows, OSX, or Linux make sure you have the latest Visual Studio Code version for your OS. You can follow [the **first page** of pre-requisites as described here](https://code.visualstudio.com/tutorials/functions-extension/getting-started){:title="Function extension"}{:target="_blank"} to get the Azure Functions extension configured
-
-    * If using Visual Studio for in Windows, make sure you have the [latest Visual Studio 2017 or 2019](a href="https://www.visualstudio.com/vs/") with the `Azure development workload` selected.  
+  * If using Visual Studio for in Windows, make sure you have the [latest Visual Studio 2017 or 2019](a href="https://www.visualstudio.com/vs/") with the `Azure development workload` selected.  
   
 * [.NET 5](https://www.microsoft.com/net/download)
 * [NodeJS 14 (LTS) or 16 (Current)](https://nodejs.org/en/download/)
