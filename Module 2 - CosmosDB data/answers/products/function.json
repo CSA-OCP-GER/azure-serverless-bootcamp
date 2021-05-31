@@ -1,5 +1,4 @@
 {
-  "disabled": false,
   "bindings": [
     {
       "authLevel": "anonymous",
@@ -7,7 +6,8 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get"
+        "get",
+        "post"
       ]
     },
     {
@@ -20,7 +20,7 @@
       "name": "product",
       "databaseName": "icecream",
       "collectionName": "products",
-      "connectionStringSetting": "CosmosDBConnectionString",
+      "connectionStringSetting": "CosmosDbConnectionString",
       "direction": "in",
       "Id": "{Query.id}"
     }

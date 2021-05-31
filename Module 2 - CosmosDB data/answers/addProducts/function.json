@@ -1,5 +1,4 @@
 {
-  "disabled": false,
   "bindings": [
     {
       "authLevel": "anonymous",
@@ -7,6 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": [
+        "get",
         "post"
       ]
     },
@@ -21,8 +21,8 @@
       "databaseName": "icecream",
       "collectionName": "products",
       "createIfNotExists": true,
-      "connectionStringSetting": "CosmosDbConnectionString",     
+      "connectionStringSetting": "CosmosDbConnectionString",
       "direction": "out"
-    }
-  ]
+  }  
+]
 }

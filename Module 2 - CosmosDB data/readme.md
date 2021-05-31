@@ -6,7 +6,7 @@ For this module we will take the function we created in module 1 and add some re
 
 * You must have the app working from module 1.  Feel free to use the answers folder if you want to jump ahead and open that solution in VS Code.
 * For easy debugging I recommend installing the Azure CosmosDB Visual Studio Code extension or the Azure Storage Explorer
-* You'll also need to make an HTTP POST, so I suggest getting an HTTP tester like [Postman](https://www.getpostman.com/apps)
+* You'll also need to make an HTTP POST, so I suggest getting an HTTP tester like [Postman](https://www.getpostman.com/apps) or even easier use the VIsual Studio Code Extension [REST Client](https://github.com/Huachao/vscode-restclient).
 
 ## Challenge
 
@@ -56,13 +56,15 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
 <details><summary>Click to open</summary><p>
 
-1. Open the Azure Portal and create a new Azure CosmosDB database.  **BE SURE TO SELECT SQL FOR THE API and Don't enable Virtual Networks**.
+1. Open the Azure Portal and create a new Azure CosmosDB database.  **BE SURE TO SELECT SQL FOR THE API and Don't enable Virtual Networks**. And if you have not used until now, take the free tier advantage for the CosmosDB and if not possible the serverless option.
     * It's not required but I recommend putting this in the same resource group as the function app from module 1.
+
 1. After the CosmosDB account has been created, open it and copy the "Primary Connection String" from the **Keys** section.  Save this for later.  You may even want to continue on with the next step and come back later to get the key as CosmosDB can take a few minutes to deploy.
 
     Now onto VS Code
 
 1. Open your project in VS Code from Module 1.
+
 1. Make the following code changes to the app to no longer expect static data, but to expect dynamic data returned from the CosmosDB *binding* in Azure Functions.
 
     ```javascript
@@ -216,7 +218,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
     > addProducts: http://localhost:7071/api/addProducts
     > products: http://localhost:7071/api/products
 
-1. Open Postman to create a document.  
+1. If you want to use Postman to check your newly deployed Function in Azure - open Postman to create a document.  
     1. Create a `POST` request to `http://localhost:7071/api/addProducts`
     1. Select **Body**, choose **raw** and toggle the type to **JSON (application/json)**
     1. Add the following product:
@@ -231,8 +233,30 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     ![](media/postman.png)  
 
-1. Send the request, you should get a 200 response back.  If you go now to the CosmosDB Visual Studio extension or the CosmosDB account in the Azure Portal and opening the Data explorer, you should see this added into the CosmosDB account (icecream database, products collection).
-1. Make another request but add in a second flavor
+1. If you prefer to stay in your VSCode environment you can use the REST Client Extension - just create a file e.g. *test.http* using the following syntax to send a request to you function in azure:
+
+  ```json
+      ###
+
+      POST http://localhost:7071/api/addProducts HTTP/1.1
+      Content-Type: application/json
+
+      {
+          "id": "1",
+          "flavor": "Rainbow Road",
+          "price-per-scoop": 3.99
+      }
+
+      ###
+      POST http://localhost:7071/api/products?id=1 HTTP/1.1
+  ```
+
+  The REST client will then offer inline the http-file to send the request:
+
+  ![REST Client](media/RESTclient.png)
+
+2. Send the request, you should get a 200 response back.  If you go now to the CosmosDB Visual Studio extension or the CosmosDB account in the Azure Portal and opening the Data explorer, you should see this added into the CosmosDB account (icecream database, products collection).
+3. Make another request but add in a second flavor
     ```json
     {
          "id": "1",
@@ -243,9 +267,9 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     Our CosmosDB backend should have both files.
 
-1. Using Postman (or a web browser), query both of these documents
+4. Using Postman (or a web browser), query both of these documents
     1. Make a `GET` request to `http://localhost:7071/api/products?id=2` and `http://localhost:7071/api/products?id=1`
-    1. You should see the docs returned from CosmosDB (as well as some additional properties CosmosDB has added)
+    2. You should see the docs returned from CosmosDB (as well as some additional properties CosmosDB has added)
     
     ```json
     {
@@ -261,14 +285,14 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     Now that the app is working and backed by CosmosDB, we need to publish this update.
 
-1. Open the Azure Functions extension in VS Code and click the up-arrow icon to publish
-1. Choose the current folder, and select the function app created in step 1
+5. Open the Azure Functions extension in VS Code and click the up-arrow icon to publish
+6. Choose the current folder, and select the function app created in step 1
     1. You should see a notification that the app is updating
-1. There is one last step.  We need to update the application settings in your published app to have the changes we made to local settings.  In the VS Code Azure Functions extension, find your function app, open it, right-click the "Application Settings" and choose **Upload local settings..**.  This will push your local settings up to your published app.
+7. There is one last step.  We need to update the application settings in your published app to have the changes we made to local settings.  In the VS Code Azure Functions extension, find your function app, open it, right-click the "Application Settings" and choose **Upload local settings..**.  This will push your local settings up to your published app.
 
     ![](media/uploadfromlocal.png)
 
-1. Open your function in the Azure Portal, get the URLs, and verify the functions work in your published apps
+8. Open your function in the Azure Portal, get the URLs, and verify the functions work in your published apps
 
 </p></details>
 
