@@ -12,7 +12,7 @@ For this module we will take the function we created in module 1 and add some re
 
 Have two API endpoints, both backed by CosmosDB data.  When I call
 
-```
+```bash
 GET http://{myFunctionEndpoint}/api/products?id=1
 ```
 
@@ -30,7 +30,7 @@ However this data should be pulling from CosmosDB and could be updated at any ti
 
 In addition a new operation should be added to add products:
 
-```
+```bash
 POST http://{myFunctionEndpoint}/api/addProducts
 ```
 
@@ -53,7 +53,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
 1. Check out the [documentation](#documentation) for more guidance
 
 ### Guided instructions
-
+<!-- markdownlint-disable MD032 MD033 -->
 <details><summary>Click to open</summary><p>
 
 1. Open the Azure Portal and create a new Azure CosmosDB database.  **BE SURE TO SELECT SQL FOR THE API and Don't enable Virtual Networks**. And if you have not used until now, take the free tier advantage for the CosmosDB and if not possible the serverless option.
@@ -88,9 +88,9 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     You'll notice that a few changes were made.  We're no longer passing back a static response, but instead returning a `product`.  That product was added to the method signature as well.  Now we need to configure what `product` should be.  That change is made in the `function.json` file in the same directory.
 
-
 1. Overwrite the `function.json` to the following:
-    ```json
+
+  ```json
     {
       "disabled": false,
       "bindings": [
@@ -123,14 +123,14 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     This is adding a new binding in the function metadata for `CosmosDB`.  You'll see the name of the property we are setting `product`, which corresponds to the function code `product` in the previous step.  In addition we define information on which database and CosmosDB account to connect to.  Specifically we want to connect to the `icecream` database, `products` collection, with the CosmosDB account information from the `CosmosDBConnectionString` setting.  We'll get into that setting later.
 
-    The last chage is the most interesting. You'll see we have an `Id` property in the `function.json`.  This is letting the *input* binding know which document ID to grab.  Azure Functions could also have a SQL query here to query multiple documents, but here we know the ID will be the query parameter `ID`.  Azure Functions provides syntax to grab properties from query or body parameters of triggers. In this case, `{Query.id}` is saying "Get the CosmosDB document in this collection that has the same ID as the `id` query parameter for the HTTP request".  So really the Azure Functions binding framework is doing all of the heavy lifting of exposing CosmosDB through an API.
+    The last change is the most interesting. You'll see we have an `Id` property in the `function.json`.  This is letting the *input* binding know which document ID to grab.  Azure Functions could also have a SQL query here to query multiple documents, but here we know the ID will be the query parameter `ID`.  Azure Functions provides syntax to grab properties from query or body parameters of triggers. In this case, `{Query.id}` is saying "Get the CosmosDB document in this collection that has the same ID as the `id` query parameter for the HTTP request".  So really the Azure Functions binding framework is doing all of the heavy lifting of exposing CosmosDB through an API.
 
     We won't be able to test this function yet, as the CosmosDB account created earlier is totally empty.  So let's add a new function.
 
-1. In the Visual Studio Code extension for Azure Functions, click the lightning bolt icon to add a new function to this app.
-1. Select the current folder to add to the existing app. This function will also be HTTP triggered.
-1. Name it `addProducts` and give it `anonymous` access permissions.
-1. Replace the code in the new `index.js` for `addProducts` with the following:
+2. In the Visual Studio Code extension for Azure Functions, click the lightning bolt icon to add a new function to this app.
+3. Select the current folder to add to the existing app. This function will also be HTTP triggered.
+4. Name it `addProducts` and give it `anonymous` access permissions.
+5. Replace the code in the new `index.js` for `addProducts` with the following:
 
     ```javascript
     module.exports = async function (context, req) {
@@ -142,7 +142,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     You'll notice we don't need a lot of code here.  In this case we have the same inputs as a regular HTTP function, but in the `context` we are setting the value of a binding `product` to the request body of the HTTP request.  That single line of code is all we need to add a document to CosmosDB!  However we do need to define the metadata so the function runtime knows where to put that document.
 
-1. Replace the contents of the `function.json` file in the `addProducts` folder with the following:
+6. Replace the contents of the `function.json` file in the `addProducts` folder with the following:
 
     ```json
     {
@@ -179,7 +179,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     The last part is we need to associate the CosmosDB we created in the first few steps with these functions.  You may have noticed we've referenced `CosmosDbConnectionString` a few times.  Those connection string settings and environment variables are stored in `local.settings.json`
 
-1. Open the `local.settings.json` file at the root of the project.  It should look like this:
+7. Open the `local.settings.json` file at the root of the project.  It should look like this:
 
     ```json
     {
@@ -191,11 +191,11 @@ Which would add a new document to CosmosDB with the corresponding product inform
     }
     ```
 
-    To get our functions running we need to do two things.  First we need to add a connection string for `AzureWebJobsStorage`.  This is a storage account the function will use for state and to integrate with some triggers and bindings like CosmosDB.  The seccond is we need to add a new settings `CosmosDbConnectionString`.  This is the setting that will give our previous functions access to the cosmosDB account we created.
+    To get our functions running we need to do two things.  First we need to add a connection string for `AzureWebJobsStorage`.  This is a storage account the function will use for state and to integrate with some triggers and bindings like CosmosDB.  The second is we need to add a new settings `CosmosDbConnectionString`.  This is the setting that will give our previous functions access to the cosmosDB account we created.
 
-1. Open the Azure Portal to the resource group with your published function app from step 1.  You should see a Storage Account in that resource group (green square icon).  Open it, select **Access Keys** in the left-hand nav, and copy the **Connection string** for **key1**.  Paste this value in the quotes for `AzureWebJobsStorage` in the `local.settings.json` file.
-1. Add a new `Values` for `CosmosDbConnectionString` in the `local.settings.json` file and paste in the connection string from the CosmosDB account created in the earlier steps.
-1. Your `local.settings.json` should now look something like this:
+8. Open the Azure Portal to the resource group with your published function app from step 1.  You should see a Storage Account in that resource group (green square icon).  Open it, select **Access Keys** in the left-hand nav, and copy the **Connection string** for **key1**.  Paste this value in the quotes for `AzureWebJobsStorage` in the `local.settings.json` file.
+9.  Add a new `Values` for `CosmosDbConnectionString` in the `local.settings.json` file and paste in the connection string from the CosmosDB account created in the earlier steps.
+10. Your `local.settings.json` should now look something like this:
     
     ```json
     {
@@ -209,7 +209,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
       
     ```
 
-1. Click the **Debug** menu and **Start Debugging**.
+11. Click the **Debug** menu and **Start Debugging**.
     > The first time you debug a function that has a binding or trigger other than HTTP / timer, the local runtime will install the extension.  The latest version of VS Code should do this automatically for you.  However if not you may need to run the command `func extensions install` at the root of the project.
 
     You should see two URLs generated like the following:
@@ -218,10 +218,10 @@ Which would add a new document to CosmosDB with the corresponding product inform
     > addProducts: http://localhost:7071/api/addProducts
     > products: http://localhost:7071/api/products
 
-1. If you want to use Postman to check your newly deployed Function in Azure - open Postman to create a document.  
+12. If you want to use Postman to check your newly deployed Function in Azure - open Postman to create a document.  
     1. Create a `POST` request to `http://localhost:7071/api/addProducts`
-    1. Select **Body**, choose **raw** and toggle the type to **JSON (application/json)**
-    1. Add the following product:
+    2. Select **Body**, choose **raw** and toggle the type to **JSON (application/json)**
+    3. Add the following product:
 
     ```json
     {
@@ -233,7 +233,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     ![](media/postman.png)  
 
-1. If you prefer to stay in your VSCode environment you can use the REST Client Extension - just create a file e.g. *test.http* using the following syntax to send a request to you function in azure:
+13. If you prefer to stay in your VSCode environment you can use the REST Client Extension - just create a file e.g. *test.http* using the following syntax to send a request to you function in azure:
 
   ```json
       ###
@@ -255,9 +255,10 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
   ![REST Client](media/RESTclient.png)
 
-2. Send the request, you should get a 200 response back.  If you go now to the CosmosDB Visual Studio extension or the CosmosDB account in the Azure Portal and opening the Data explorer, you should see this added into the CosmosDB account (icecream database, products collection).
-3. Make another request but add in a second flavor
-    ```json
+1. Send the request, you should get a 200 response back.  If you go now to the CosmosDB Visual Studio extension or the CosmosDB account in the Azure Portal and opening the Data explorer, you should see this added into the CosmosDB account (icecream database, products collection).
+1. Make another request but add in a second flavor
+
+  ```json
     {
          "id": "1",
          "flavor": "Rainbow Road",
@@ -298,6 +299,6 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
 ## Documentation
 
-* [Azure Cosmos DB Overview](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction)
-* [Azure Functions CosmosDB Binding (v2)](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-cosmosdb-v2)
+* [Azure Cosmos DB Overview](https://docs.microsoft.com/azure/cosmos-db/introduction)
+* [Azure Functions CosmosDB Binding (v2)](https://docs.microsoft.com/azure/azure-functions/functions-bindings-cosmosdb-v2)
 * [Azure CosmosDB Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-cosmosdb)

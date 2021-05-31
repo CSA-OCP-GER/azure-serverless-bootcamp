@@ -9,11 +9,11 @@ In this module, you will be using Logic Apps as the workflow engine and integrat
 * A modern laptop running Windows 10, Mac OSX Mac OS X 10.12 or higher
 * Your preferred browser to access [Azure Portal](https://portal.azure.com)
 * An Outlook 365 or Outlook.com e-mail account
-* Completetion of Module 1, 2, and 3
+* Completion of Module 1, 2, and 3
 
 ## Challenge
 
-Create a Logic App that will be triggered by a purchase event from the custom Event Grid topic you created in Module 3. 
+Create a Logic App that will be triggered by a purchase event from the custom Event Grid topic you created in Module 3.
 
 ```json
 {
@@ -28,7 +28,7 @@ Upon receiving the event, the Logic App will query Cosmos DB to retrieve the pro
 ### Tips
 
 1. First things first, make sure your machine is all set up and can sign into [Azure Portal](https://portal.azure.com).
-1. If you have neither Outlook 365 nor Outlook.com account, [sign up for a free Outlook.com account]().
+1. If you have neither Outlook 365 nor Outlook.com account, [sign up for a free Outlook.com account](https://signup.live.com/?lic=1).
 1. If you did not complete Module 3, don't worry, instead of using event to trigger the Logic App, use a **Request** trigger instead.
 1. You will also need another Cosmos DB collection to store customer's feedback, so make sure to create one within the same database you created in Module 2.
 
@@ -42,12 +42,14 @@ Upon receiving the event, the Logic App will query Cosmos DB to retrieve the pro
 1. Select `Event Grid` from the list then select `When a resource event occurs` trigger
 ![Event Grid trigger](./images/event-grid-trigger.jpg)
 1. Sign in with the same account you used to sign into Azure portal
-1. Fill in **Subscription**, select `Microsoft.EventGrid.Topics` for **Resource Type**, and select the name you of your custom topic created in **module 3**. You may ignore "Event Type Item" selection for this execrise.
-1. Before proceed any further, let's make sure the trigger works. Save the Logic App, and invoke the purchse function you created in Module 3.
-```
+1. Fill in **Subscription**, select `Microsoft.EventGrid.Topics` for **Resource Type**, and select the name you of your custom topic created in **module 3**. You may ignore "Event Type Item" selection for this exercise.
+1. Before proceed any further, let's make sure the trigger works. Save the Logic App, and invoke the purchase function you created in Module 3.
+
+```bash
 POST http://{myFunctionEndpoint}/api/iceCreamOrder
 ```
-1. Close the designer and refresh the Logic App to load new runs, you should see one or more (depending on how many calls you made to the purchase function) funs.
+
+1. Close the designer and refresh the Logic App to load new runs, you should see one or more (depending on how many calls you made to the purchase function) runs.
 ![Refresh Logic Apps](./images/refresh.jpg)
 1. Once confirmed, switch back to designer by clicking the **Edit** button, and add a `Parse JSON` action by clicking **New step** and search for it.
 1. Use `Data object` as the input to  **Content**.
@@ -76,13 +78,14 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 ```
 
 1. Next, add a new action from either Outlook 365 or Outlook.com, depending on the type of account you have. The name of the action is **Send email with options**.
-2. 
-3. Use `email` token as input for **To**, `BFYOC values your feedback` as **Subject**, and `Very satisfied, Satisfied, Neutral, Unsatisfied, Very unsatisfied` for **User Options**. Then, use various tokens available to write a nice e-mail body.
+
+1. Use `email` token as input for **To**, `BFYOC values your feedback` as **Subject**, and `Very satisfied, Satisfied, Neutral, Unsatisfied, Very unsatisfied` for **User Options**. Then, use various tokens available to write a nice e-mail body.
 ![Email with options](./images/email-options.jpg)
 1. Once customer selected an option, it will be captured and send back to Logic App for it to continue it's execution. Let's store it in the Cosmos DB first.
-1. First Step to store this customer feedback in the Cosmos DB is to create the new container `reviews` - go to the Azrue Portal and add this container to our existing database `icecream`. Have in mind that fixed sizes are not supported via the portal and think about a partion key for your collection.  
-2. After the collection is deployed we can start to add the step to the Logic App. Search and add **Cosmos - Create or update document** action.
-3. Select `icecream` as **Database ID**, `reviews` as **Collection ID**, and the following JSON object as **Document** and don't forget to add your partion key to the json.
+1. First Step to store this customer feedback in the Cosmos DB is to create the new container `reviews` - go to the Azure Portal and add this container to our existing database `icecream`. Have in mind that fixed sizes are not supported via the portal and think about a partion key for your collection.  
+1. After the collection is deployed we can start to add the step to the Logic App. Search and add **Cosmos - Create or update document** action.
+1. Select `icecream` as **Database ID**, `reviews` as **Collection ID**, and the following JSON object as **Document** and don't forget to add your partition key to the json.
+
 ```json
 {
   "id": "[Use expression editor to insert guid() expression]",
@@ -92,11 +95,12 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 ```
 
 ### What's Next?
+
 It's up to you what action to take when there's an unhappy customer! Send them a email with coupon code, inform a team member to follow up, you decided. Explore more than [200 different products and services](https://docs.microsoft.com/connectors/) Logic Apps connects to out-of-box and build something awesome.
 
 For example, consider adding a `Condition` action, and create a rule for when customer selected either **Unsatisfied** or **Very unsatisfied**.
 ![Condition builder](./images/condition-builder.jpg). In the **If true** branch, send an e-mail to BFYOC team to alert them when there's an unhappy customer.
- 
+
 </p></details>
 <!-- markdownlint-disable MD032 MD033 -->
 

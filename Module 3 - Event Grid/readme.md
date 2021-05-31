@@ -6,7 +6,7 @@ This module will walk you though subscribing to Azure events as well as publishi
 
 ## Challenge
 
-Create an Azure Function that [publishes an event to a custom topic](https://docs.microsoft.com/en-us/azure/event-grid/post-to-custom-topic) with data about the Ice Cream order every time it is triggered.
+Create an Azure Function that [publishes an event to a custom topic](https://docs.microsoft.com/azure/event-grid/post-to-custom-topic) with data about the Ice Cream order every time it is triggered.
 
 The event posted to the custom topic must be of the form:
 
@@ -31,7 +31,7 @@ The data payload is the order data, and the outer envelope is the event metadata
 
 You may input your order and trigger the Function however you choose, however, we recommend a POST to an HTTP triggered Function as in the first two modules for simplicity:
 
-```
+```bash
 POST http://{myFunctionEndpoint}/api/iceCreamOrder
 ```
 
@@ -41,21 +41,22 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
   "itemOrdered": "52325",
   "email": "hello@contoso.com"
 }
-``` 
+```
 
 ### Tips
 
-1. You will need to start by [creating a custom topic](https://docs.microsoft.com/en-us/azure/event-grid/scripts/event-grid-cli-create-custom-topic) to push your custom events to. This can be done via the portal, CLI, or PowerShell.
+1. You will need to start by [creating a custom topic](https://docs.microsoft.com/azure/event-grid/scripts/event-grid-cli-create-custom-topic) to push your custom events to. This can be done via the portal, CLI, or PowerShell.
 1. You will need to follow the same process as in modules one and two in order to create an HTTP triggered function.
-1. Once you have your function posting to your custom topic, you can test it out by [subscribing to your topic](https://docs.microsoft.com/en-us/azure/event-grid/scripts/event-grid-cli-subscribe-custom-topic) via the Portal, CLI, or Powershell and sending the events to the same web app that you made in part one of this module.
+1. Once you have your function posting to your custom topic, you can test it out by [subscribing to your topic](https://docs.microsoft.com/azure/event-grid/scripts/event-grid-cli-subscribe-custom-topic) via the Portal, CLI, or Powershell and sending the events to the same web app that you made in part one of this module.
 
 ### Guided instructions
-
+<!-- markdownlint-disable MD032 MD033 -->
 <details><summary>Click to open</summary><p>
 
 1. Open the Azure Portal and create an Event Grid Topic.
   ![Create Custom Topic](./media/create-topic.png)
-  * Note your Topic endpoint and key, you will need these later.
+
+  >Note: your Topic endpoint and key, you will need these later.
 
   We are creating the Topic as a place to send an event every time an order is placed for ice cream. This will allow us subscribe to events regarding ice cream orders and decouple any future downstream processes. Our marketing, operations, and management teams could all subscribe to this topic and listen to events relevant to them without modifying this module.
 
@@ -117,7 +118,7 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 
   Make sure you update the `<topic-endpoint>` and `<aeg-sas-key>` with that of your topic from the first step.
 
-  >ATTENTION: Maybe you need to install the required packages for this code above with the `npm install` command in the terminal window of Visual Studio Code. 
+  >ATTENTION: Maybe you need to install the required packages for this code above with the `npm install` command in the terminal window of Visual Studio Code.
 
   What we are doing here is taking the body of the HTTP request and making it the data payload of an Event Grid event. Then all we have to do is add our SAS key as a header value and make an HTTP POST to the topic endpoint with our event as the message body.
 
@@ -159,7 +160,7 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 
 1. Now, to see your orders flowing in real time, open the Azure Portal and navigate to your ice cream order Topic. Create an new event subscription on the topic and set the endpoint to `https://<your-site-name>.azurewebsites.net/api/updates`.
 
-  * You will see a Subscription Validation Event appear in your viewer - this is part of [Event Grid's security model](https://docs.microsoft.com/en-us/azure/event-grid/security-authentication), however in this case the viewer handles things for you, so nothing further is required by you.
+   >Note: You will see a Subscription Validation Event appear in your viewer - this is part of [Event Grid's security model](https://docs.microsoft.com/azure/event-grid/security-authentication), however in this case the viewer handles things for you, so nothing further is required by you.
 
   ![Create event subscription](./media/create-test-subscription.PNG)
 
@@ -187,6 +188,7 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 
 1. Send the request, you should get a 200 response back. If you go to your Event Viewer web app `https://<your-site-name>.azurewebsites.net`, you should now see a new event for the order you just placed.
 1. Try sending some more orders:
+
     ```json
     {
       "orderId": "2",
@@ -208,7 +210,7 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 
 ## Bonus
 
-BFYOC ice cream is always updating their ice cream offerings and you need to keep your franchise's ice cream availability constantly up to date. Each time BFYOC adds a new flavor, you'll need to update your CosmodDB from module two with the new offering. BFYOC now has a staff writer and a photographer, so each ice cream will be made available to you with the product data, description, and photo as separate files.
+BFYOC ice cream is always updating their ice cream offerings and you need to keep your franchise's ice cream availability constantly up to date. Each time BFYOC adds a new flavor, you'll need to update your CosmosDB from module two with the new offering. BFYOC now has a staff writer and a photographer, so each ice cream will be made available to you with the product data, description, and photo as separate files.
 
 ### Pre-requisites
 
@@ -238,9 +240,9 @@ To correlate the files, each will be prefixed with the product ID.
 
 Two sets of sample files have been provided for you in the supporting-files folder of this module.
 
-### Tips
+### Bonus Tips
 
-1. Using Event Grid will allow you to subscribe to `Microsoft.Storage.BlobCreated` events and have then pushed anywhere in real time. [Here is a quickstart](https://docs.microsoft.com/en-us/azure/event-grid/blob-event-quickstart-portal).
+1. Using Event Grid will allow you to subscribe to `Microsoft.Storage.BlobCreated` events and have then pushed anywhere in real time. [Here is a quickstart](https://docs.microsoft.com/azure/event-grid/blob-event-quickstart-portal).
 1. You can deploy a pre-built web app by clicking the button below to send your events to and see them flowing in real time. Super handy for testing.
 
     <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Samples%2Fazure-event-grid-viewer%2Fmaster%2Fazuredeploy.json" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
@@ -253,12 +255,11 @@ Two sets of sample files have been provided for you in the supporting-files fold
 
 1. Like all of the modules in this workshop, there are many ways of accomplishing this objective:
 
- * Durable functions with a suborchestrator intrance for each batch that waits for all three files.
- * Using a regular function and with each new file upload, check if all three of the batch are present.
- * Using the Logic Apps batch trigger.
- * Loading all files into Cosmos and then a second process that check for all three files of a given batch on some regular interval.
- * Many more...
-
+* Durable functions with a sub-orchestrator instance for each batch that waits for all three files.
+* Using a regular function and with each new file upload, check if all three of the batch are present.
+* Using the Logic Apps batch trigger.
+* Loading all files into Cosmos and then a second process that check for all three files of a given batch on some regular interval.
+* Many more...
 
 ## Documentation
 
