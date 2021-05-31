@@ -69,7 +69,7 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 1. Replace the code in the new `index.js` for `iceCreamOrder` with the following:
 
   ```javascript
-  var uuid = require('uuid').v4;
+  var uuid = require('uuid');
   var msRestAzure = require('ms-rest-azure');
   var eventGrid = require("azure-eventgrid");
   var url = require('url');
@@ -91,7 +91,7 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 
           let events = [
               {
-                  id: uuid(),
+                  id: uuid.v4(),
                   subject: 'BFYOC/stores/serverlessWorkshop/orders',
                   dataVersion: '2.0',
                   eventType: 'BFYOC.IceCream.Order',
@@ -117,7 +117,7 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 
   Make sure you update the `<topic-endpoint>` and `<aeg-sas-key>` with that of your topic from the first step.
 
-  >ATTENTION: Maybe you need to install the required packages for this code above with the `npm install` command in the terminal window of Visual Studio Code
+  >ATTENTION: Maybe you need to install the required packages for this code above with the `npm install` command in the terminal window of Visual Studio Code. 
 
   What we are doing here is taking the body of the HTTP request and making it the data payload of an Event Grid event. Then all we have to do is add our SAS key as a header value and make an HTTP POST to the topic endpoint with our event as the message body.
 
@@ -249,7 +249,7 @@ Two sets of sample files have been provided for you in the supporting-files fold
     * View your website by navigating to `https://<your-site-name>.azurewebsites.net`.
 
     ![View new site](./media/grid-viewer.png)
-1. You can choose to use [Durable Functions](https://docs.microsoft.com/en-us/azure/azure-functions/durable-functions-overview) to create stateful functions in a serverless environment. This is one way of solving the problem of waiting for all three files to be available before creating your new document in CosmosDB.
+1. You can choose to use [Durable Functions](https://docs.microsoft.com/azure/azure-functions/durable-functions-overview) to create stateful functions in a serverless environment. This is one way of solving the problem of waiting for all three files to be available before creating your new document in CosmosDB.
 
 1. Like all of the modules in this workshop, there are many ways of accomplishing this objective:
 
@@ -262,9 +262,9 @@ Two sets of sample files have been provided for you in the supporting-files fold
 
 ## Documentation
 
-* [An overview of Azure Event Grid](https://docs.microsoft.com/en-us/azure/event-grid/overview)
-* [Blob Storage quickstart](https://docs.microsoft.com/en-us/azure/event-grid/blob-event-quickstart-portal)
-* [Custom Events quickstart](https://docs.microsoft.com/en-us/azure/event-grid/custom-event-quickstart-portal)
-* [How to receive events from Event Grid](https://docs.microsoft.com/en-us/azure/event-grid/receive-events)
-* [Available tutorials, quickstarts, and docs on Event Sources](https://docs.microsoft.com/en-us/azure/event-grid/event-sources)
-* [Available tutorials, quickstarts, and docs on Event Handlers](https://docs.microsoft.com/en-us/azure/event-grid/event-handlers)
+* [An overview of Azure Event Grid](https://docs.microsoft.com/azure/event-grid/overview)
+* [Blob Storage quickstart](https://docs.microsoft.com/azure/event-grid/blob-event-quickstart-portal)
+* [Custom Events quickstart](https://docs.microsoft.com/azure/event-grid/custom-event-quickstart-portal)
+* [How to receive events from Event Grid](https://docs.microsoft.com/azure/event-grid/receive-events)
+* [Available tutorials, quickstarts, and docs on Event Sources](https://docs.microsoft.com/azure/event-grid/event-sources)
+* [Available tutorials, quickstarts, and docs on Event Handlers](https://docs.microsoft.com/azure/event-grid/event-handlers)

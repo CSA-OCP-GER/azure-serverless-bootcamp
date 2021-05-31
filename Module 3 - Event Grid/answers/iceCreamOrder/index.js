@@ -1,4 +1,4 @@
-var uuid = require('uuid').v4;
+var uuid = require('uuid');
 var msRestAzure = require('ms-rest-azure');
 var eventGrid = require("azure-eventgrid");
 var url = require('url');
@@ -8,9 +8,9 @@ module.exports = function (context, req) {
 
     if (req.body) {
         // TODO: Enter value for topicKey
-        let topicKey = '<aeg-sas-key>';
+        let topicKey = 'fQVV+LkDEOnd6LvvSunFuQVVmrs5s6viXK0yZml8P/8=';
         // TODO: Enter value for topic-endpoint
-        let topicEndPoint = '<topic-endpoint>';
+        let topicEndPoint = 'https://byocordersdemo.westeurope-1.eventgrid.azure.net/api/events';
 
         let topicCreds = new msRestAzure.TopicCredentials(topicKey);
         let egClient = new eventGrid(topicCreds);
@@ -20,7 +20,7 @@ module.exports = function (context, req) {
 
         let events = [
             {
-                id: uuid(),
+                id: uuid.v4(),
                 subject: 'BFYOC/stores/serverlessWorkshop/orders',
                 dataVersion: '2.0',
                 eventType: 'BFYOC.IceCream.Order',

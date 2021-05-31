@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "ms-rest-azure": "^3.0.0"
+  }
+}
