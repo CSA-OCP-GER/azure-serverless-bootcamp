@@ -105,4 +105,4 @@ For example, consider adding a `Condition` action, and create a rule for when cu
 * [Quickstart: Create your first automated workflow with Azure Logic Apps - Azure portal](https://docs.microsoft.com/azure/logic-apps/quickstart-create-first-logic-app-workflow)
 * [Manage mailing list requests with a logic app](https://docs.microsoft.com/azure/logic-apps/tutorial-process-mailing-list-subscriptions-workflow)
 * [Get started with the delay and delay-until actions](https://docs.microsoft.com/azure/connectors/connectors-native-delay)
-* [Learn about Partitioning and horizontal scaling in Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/partition-data)
+* [Learn about Partitioning and horizontal scaling in Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/partition-data)
