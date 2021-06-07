@@ -69,86 +69,86 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 1. Name it `iceCreamOrder` and give it `anonymous` access permissions.
 1. Replace the code in the new `index.js` for `iceCreamOrder` with the following:
 
-```javascript
-var uuid = require('uuid');
-var msRestAzure = require('ms-rest-azure');
-var eventGrid = require("azure-eventgrid");
-var url = require('url');
+    ```javascript
+    var uuid = require('uuid');
+    var msRestAzure = require('ms-rest-azure');
+    var eventGrid = require("azure-eventgrid");
+    var url = require('url');
 
-module.exports = function (context, req) {
-    context.log('New ice cream order made.');
+    module.exports = function (context, req) {
+        context.log('New ice cream order made.');
 
-    if (req.body) {
-        // TODO: Enter value for topicKey
-        let topicKey = '<aeg-sas-key>';
-        // TODO: Enter value for topic-endpoint
-        let topicEndPoint = '<topic-endpoint>';
+        if (req.body) {
+            // TODO: Enter value for topicKey
+            let topicKey = '<aeg-sas-key>';
+            // TODO: Enter value for topic-endpoint
+            let topicEndPoint = '<topic-endpoint>';
 
-        let topicCreds = new msRestAzure.TopicCredentials(topicKey);
-        let egClient = new eventGrid(topicCreds);
-        let topicUrl = url.parse(topicEndPoint, true);
-        let topicHostName = topicUrl.host;
-        let currentDate = new Date();
+            let topicCreds = new msRestAzure.TopicCredentials(topicKey);
+            let egClient = new eventGrid(topicCreds);
+            let topicUrl = url.parse(topicEndPoint, true);
+            let topicHostName = topicUrl.host;
+            let currentDate = new Date();
 
-        let events = [
-            {
-                id: uuid.v4(),
-                subject: 'BFYOC/stores/serverlessWorkshop/orders',
-                dataVersion: '2.0',
-                eventType: 'BFYOC.IceCream.Order',
-                data: req.body,
-                eventTime: currentDate
-            }
-        ];
-        egClient.publishEvents(topicHostName, events).then((result) => {
-            return Promise.resolve(console.log('Published events successfully.'));
-        }).catch((err) => {
-            console.log('An error ocurred ' + err);
-        });
-    }
-    else {
-        context.res = {
-            status: 400,
-            body: "Please pass an ice cream order in the request body"
-        };
-    }
-    context.done();
-};
-```
+            let events = [
+                {
+                    id: uuid.v4(),
+                    subject: 'BFYOC/stores/serverlessWorkshop/orders',
+                    dataVersion: '2.0',
+                    eventType: 'BFYOC.IceCream.Order',
+                    data: req.body,
+                    eventTime: currentDate
+                }
+            ];
+            egClient.publishEvents(topicHostName, events).then((result) => {
+                return Promise.resolve(console.log('Published events successfully.'));
+            }).catch((err) => {
+                console.log('An error ocurred ' + err);
+            });
+        }
+        else {
+            context.res = {
+                status: 400,
+                body: "Please pass an ice cream order in the request body"
+            };
+        }
+        context.done();
+    };
+    ```
 
-Make sure you update the `<topic-endpoint>` and `<aeg-sas-key>` with that of your topic from the first step.
+    Make sure you update the `<topic-endpoint>` and `<aeg-sas-key>` with that of your topic from the first step.
 
->ATTENTION: Maybe you need to install the required packages for this code above with the `npm install` command in the terminal window of Visual Studio Code.
+    >ATTENTION: Maybe you need to install the required packages for this code above with the `npm install` command in the terminal window of Visual Studio Code.
 
-What we are doing here is taking the body of the HTTP request and making it the data payload of an Event Grid event. Then all we have to do is add our SAS key as a header value and make an HTTP POST to the topic endpoint with our event as the message body.
+    What we are doing here is taking the body of the HTTP request and making it the data payload of an Event Grid event. Then all we have to do is add our SAS key as a header value and make an HTTP POST to the topic endpoint with our event as the message body.
 
 1. Update the contents of the `function.json` file in the `IceCreamOrder` folder to the following by deleting the GET method from the input binding:
 
-```json
-{
-  "disabled": false,
-  "bindings": [
+    ```json
     {
-      "authLevel": "anonymous",
-      "type": "httpTrigger",
-      "direction": "in",
-      "name": "req",
-      "methods": [
-        "post"
+      "disabled": false,
+      "bindings": [
+        {
+          "authLevel": "anonymous",
+          "type": "httpTrigger",
+          "direction": "in",
+          "name": "req",
+          "methods": [
+            "post"
+          ]
+        },
+        {
+          "type": "http",
+          "direction": "out",
+          "name": "res"
+        }
       ]
-    },
-    {
-      "type": "http",
-      "direction": "out",
-      "name": "res"
     }
-  ]
-}
-```
+    ```
 
-We are telling our function it should expect an HTTP POST to trigger it not a GET. We don't want the function to be triggered erroneously.
+    We are telling our function it should expect an HTTP POST to trigger it not a GET. We don't want the function to be triggered erroneously.
 
-Now lets test everything to see it running and makes sure it works.
+    Now lets test everything to see it running and makes sure it works.
 
 1. If you have not already created an Event Grid Viewer web app, deploy one now by clicking the button below.
 
@@ -160,42 +160,42 @@ Now lets test everything to see it running and makes sure it works.
 
 1. Now, to see your orders flowing in real time, open the Azure Portal and navigate to your ice cream order Topic. Create an new event subscription on the topic and set the endpoint to `https://<your-site-name>.azurewebsites.net/api/updates`.
 
->Note: You will see a Subscription Validation Event appear in your viewer - this is part of [Event Grid's security model](https://docs.microsoft.com/azure/event-grid/security-authentication), however in this case the viewer handles things for you, so nothing further is required by you.
+    >Note: You will see a Subscription Validation Event appear in your viewer - this is part of [Event Grid's security model](https://docs.microsoft.com/azure/event-grid/security-authentication), however in this case the viewer handles things for you, so nothing further is required by you.
 
-![Create event subscription](./media/create-test-subscription.PNG)
+    ![Create event subscription](./media/create-test-subscription.PNG)
 
 1. Click the **Debug** menu and **Start Debugging**.
 
-You should see a new URL in addition to the previous APIs you've created:
+    You should see a new URL in addition to the previous APIs you've created:
 
-> Http Functions:
-> iceCreamOrder: http://localhost:7071/api/iceCreamOrder
+    > Http Functions:
+    > iceCreamOrder: http://localhost:7071/api/iceCreamOrder
 
-   1. Open Postman to create a document.  
-   2. Create a `POST` request to `http://localhost:7071/api/iceCreamOrder`
-   3. Select **Body**, choose **raw** and toggle the type to **JSON (application/json)**
-   4. Add the following order:
+      1. Open Postman to create a document.  
+      2. Create a `POST` request to `http://localhost:7071/api/iceCreamOrder`
+      3. Select **Body**, choose **raw** and toggle the type to **JSON (application/json)**
+      4. Add the following order:
 
-```json
-{
-  "orderId": "1",
-  "itemOrdered": "52325",
-  "email": "hello@contoso.com"
-}
-```  
+    ```json
+    {
+      "orderId": "1",
+      "itemOrdered": "52325",
+      "email": "hello@contoso.com"
+    }
+    ```  
 
-This should be familiar from previous sections.
+    This should be familiar from previous sections.
 
 1. Send the request, you should get a 200 response back. If you go to your Event Viewer web app `https://<your-site-name>.azurewebsites.net`, you should now see a new event for the order you just placed.
 1. Try sending some more orders:
 
-```json
-{
-  "orderId": "2",
-  "itemOrdered": "88295",
-  "email": "hello@contoso.com"
-}
-```
+    ```json
+    {
+      "orderId": "2",
+      "itemOrdered": "88295",
+      "email": "hello@contoso.com"
+    }
+    ```
 
 1. Now that you have your Topic setup and working, you can create as many Event Subscription on it as you need to trigger downstream applications and workflows in real-time.
 
