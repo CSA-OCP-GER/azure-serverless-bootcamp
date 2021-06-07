@@ -70,7 +70,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
     ```javascript
     module.exports = async function (context, req, product) {
         context.log('JavaScript HTTP trigger function processed a request.');
-    
+
         if (req.query.id && product) {
             context.res = {
                 status: 200,
@@ -90,7 +90,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
 1. Overwrite the `function.json` to the following:
 
-  ```json
+    ```json
     {
       "disabled": false,
       "bindings": [
@@ -127,22 +127,22 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     We won't be able to test this function yet, as the CosmosDB account created earlier is totally empty.  So let's add a new function.
 
-2. In the Visual Studio Code extension for Azure Functions, click the lightning bolt icon to add a new function to this app.
-3. Select the current folder to add to the existing app. This function will also be HTTP triggered.
-4. Name it `addProducts` and give it `anonymous` access permissions.
-5. Replace the code in the new `index.js` for `addProducts` with the following:
+1. In the Visual Studio Code extension for Azure Functions, click the lightning bolt icon to add a new function to this app.
+1. Select the current folder to add to the existing app. This function will also be HTTP triggered.
+1. Name it `addProducts` and give it `anonymous` access permissions.
+1. Replace the code in the new `index.js` for `addProducts` with the following:
 
     ```javascript
     module.exports = async function (context, req) {
         context.log('Add product processed a request.');
-    
+
         context.bindings.product = req.body;
     };
     ```
 
     You'll notice we don't need a lot of code here.  In this case we have the same inputs as a regular HTTP function, but in the `context` we are setting the value of a binding `product` to the request body of the HTTP request.  That single line of code is all we need to add a document to CosmosDB!  However we do need to define the metadata so the function runtime knows where to put that document.
 
-6. Replace the contents of the `function.json` file in the `addProducts` folder with the following:
+1. Replace the contents of the `function.json` file in the `addProducts` folder with the following:
 
     ```json
     {
@@ -179,7 +179,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     The last part is we need to associate the CosmosDB we created in the first few steps with these functions.  You may have noticed we've referenced `CosmosDbConnectionString` a few times.  Those connection string settings and environment variables are stored in `local.settings.json`
 
-7. Open the `local.settings.json` file at the root of the project.  It should look like this:
+1. Open the `local.settings.json` file at the root of the project.  It should look like this:
 
     ```json
     {
@@ -193,10 +193,10 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     To get our functions running we need to do two things.  First we need to add a connection string for `AzureWebJobsStorage`.  This is a storage account the function will use for state and to integrate with some triggers and bindings like CosmosDB.  The second is we need to add a new settings `CosmosDbConnectionString`.  This is the setting that will give our previous functions access to the cosmosDB account we created.
 
-8. Open the Azure Portal to the resource group with your published function app from step 1.  You should see a Storage Account in that resource group (green square icon).  Open it, select **Access Keys** in the left-hand nav, and copy the **Connection string** for **key1**.  Paste this value in the quotes for `AzureWebJobsStorage` in the `local.settings.json` file.
-9.  Add a new `Values` for `CosmosDbConnectionString` in the `local.settings.json` file and paste in the connection string from the CosmosDB account created in the earlier steps.
-10. Your `local.settings.json` should now look something like this:
-    
+1. Open the Azure Portal to the resource group with your published function app from step 1.  You should see a Storage Account in that resource group (green square icon).  Open it, select **Access Keys** in the left-hand nav, and copy the **Connection string** for **key1**.  Paste this value in the quotes for `AzureWebJobsStorage` in the `local.settings.json` file.
+1. Add a new `Values` for `CosmosDbConnectionString` in the `local.settings.json` file and paste in the connection string from the CosmosDB account created in the earlier steps.
+1. Your `local.settings.json` should now look something like this:
+
     ```json
     {
         "IsEncrypted": false,
@@ -209,7 +209,7 @@ Which would add a new document to CosmosDB with the corresponding product inform
       
     ```
 
-11. Click the **Debug** menu and **Start Debugging**.
+1. Click the **Debug** menu and **Start Debugging**.
     > The first time you debug a function that has a binding or trigger other than HTTP / timer, the local runtime will install the extension.  The latest version of VS Code should do this automatically for you.  However if not you may need to run the command `func extensions install` at the root of the project.
 
     You should see two URLs generated like the following:
@@ -218,60 +218,60 @@ Which would add a new document to CosmosDB with the corresponding product inform
     > addProducts: http://localhost:7071/api/addProducts
     > products: http://localhost:7071/api/products
 
-12. If you want to use Postman to check your newly deployed Function in Azure - open Postman to create a document.  
+1. If you want to use Postman to check your newly deployed Function in Azure - open Postman to create a document.  
     1. Create a `POST` request to `http://localhost:7071/api/addProducts`
     2. Select **Body**, choose **raw** and toggle the type to **JSON (application/json)**
     3. Add the following product:
 
     ```json
     {
-         "id": "2",
-         "flavor": "Coco Mountain",
-         "price-per-scoop": 2.99
+        "id": "2",
+        "flavor": "Coco Mountain",
+        "price-per-scoop": 2.99
     }
     ```  
 
-    ![](media/postman.png)  
+    ![Postman](media/postman.png)
 
-13. If you prefer to stay in your VSCode environment you can use the REST Client Extension - just create a file e.g. *test.http* using the following syntax to send a request to you function in azure:
+1. If you prefer to stay in your VSCode environment you can use the REST Client Extension - just create a file e.g. *test.http* using the following syntax to send a request to you function in azure:
 
-  ```json
-      ###
+    ```json
+        ###
 
-      POST http://localhost:7071/api/addProducts HTTP/1.1
-      Content-Type: application/json
+        POST http://localhost:7071/api/addProducts HTTP/1.1
+        Content-Type: application/json
 
-      {
-          "id": "1",
-          "flavor": "Rainbow Road",
-          "price-per-scoop": 3.99
-      }
+        {
+            "id": "1",
+            "flavor": "Rainbow Road",
+            "price-per-scoop": 3.99
+        }
 
-      ###
-      POST http://localhost:7071/api/products?id=1 HTTP/1.1
-  ```
+        ###
+        POST http://localhost:7071/api/products?id=1 HTTP/1.1
+    ```
 
-  The REST client will then offer inline the http-file to send the request:
+    The REST client will then offer inline the http-file to send the request:
 
-  ![REST Client](media/RESTclient.png)
+    ![REST Client](media/RESTclient.png)
 
 1. Send the request, you should get a 200 response back.  If you go now to the CosmosDB Visual Studio extension or the CosmosDB account in the Azure Portal and opening the Data explorer, you should see this added into the CosmosDB account (icecream database, products collection).
 1. Make another request but add in a second flavor
 
-  ```json
+    ```json
     {
-         "id": "1",
-         "flavor": "Rainbow Road",
-         "price-per-scoop": 3.99
+          "id": "1",
+          "flavor": "Rainbow Road",
+          "price-per-scoop": 3.99
     }
     ```
 
     Our CosmosDB backend should have both files.
 
-4. Using Postman (or a web browser), query both of these documents
-    1. Make a `GET` request to `http://localhost:7071/api/products?id=2` and `http://localhost:7071/api/products?id=1`
-    2. You should see the docs returned from CosmosDB (as well as some additional properties CosmosDB has added)
-    
+1. Using Postman (or a web browser), query both of these documents
+   1. Make a `GET` request to `http://localhost:7071/api/products?id=2` and `http://localhost:7071/api/products?id=1`
+   2. You should see the docs returned from CosmosDB (as well as some additional properties CosmosDB has added)
+
     ```json
     {
         "id": "2",
@@ -286,14 +286,14 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     Now that the app is working and backed by CosmosDB, we need to publish this update.
 
-5. Open the Azure Functions extension in VS Code and click the up-arrow icon to publish
-6. Choose the current folder, and select the function app created in step 1
+1. Open the Azure Functions extension in VS Code and click the up-arrow icon to publish
+1. Choose the current folder, and select the function app created in step 1
     1. You should see a notification that the app is updating
-7. There is one last step.  We need to update the application settings in your published app to have the changes we made to local settings.  In the VS Code Azure Functions extension, find your function app, open it, right-click the "Application Settings" and choose **Upload local settings..**.  This will push your local settings up to your published app.
+1. There is one last step.  We need to update the application settings in your published app to have the changes we made to local settings.  In the VS Code Azure Functions extension, find your function app, open it, right-click the "Application Settings" and choose **Upload local settings..**.  This will push your local settings up to your published app.
 
-    ![](media/uploadfromlocal.png)
+    ![Upload](media/uploadfromlocal.png)
 
-8. Open your function in the Azure Portal, get the URLs, and verify the functions work in your published apps
+1. Open your function in the Azure Portal, get the URLs, and verify the functions work in your published apps
 
 </p></details>
 
