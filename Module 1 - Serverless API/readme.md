@@ -16,7 +16,7 @@ This module will walk you through building and testing your first Azure Function
   * If using Visual Studio for in Windows, make sure you have the [latest Visual Studio 2017 or 2019](a href="https://www.visualstudio.com/vs/") with the `Azure development workload` selected.  
   
 * [.NET 5](https://www.microsoft.com/net/download)
-* [NodeJS 14 (LTS) or 16 (Current)](https://nodejs.org/en/download/)
+* [NodeJS 14 (LTS)](https://nodejs.org/en/download/)
 * [Azure Functions Core Tools v3](https://github.com/Azure/azure-functions-core-tools#installing)  
 
 >Hint:
