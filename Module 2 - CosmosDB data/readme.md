@@ -236,19 +236,18 @@ Which would add a new document to CosmosDB with the corresponding product inform
 1. If you prefer to stay in your VSCode environment you can use the REST Client Extension - just create a file e.g. *test.http* using the following syntax to send a request to you function in azure:
 
     ```json
-        ###
+    ###
+    POST http://localhost:7071/api/addProducts HTTP/1.1
+    Content-Type: application/json
 
-        POST http://localhost:7071/api/addProducts HTTP/1.1
-        Content-Type: application/json
+    {
+      "id": "1",
+      "flavor": "Rainbow Road",
+      "price-per-scoop": 3.99
+    }
 
-        {
-            "id": "1",
-            "flavor": "Rainbow Road",
-            "price-per-scoop": 3.99
-        }
-
-        ###
-        POST http://localhost:7071/api/products?id=1 HTTP/1.1
+    ###
+    POST http://localhost:7071/api/products?id=1 HTTP/1.1
     ```
 
     The REST client will then offer inline the http-file to send the request:
