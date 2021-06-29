@@ -90,7 +90,7 @@ POST http://{myFunctionEndpoint}/api/iceCreamOrder
 {
   "id": "[Use expression editor to insert guid() expression]",
   "review": "[Selected option token]",
-  "yourKey": "e.g. [Selected option token]
+  "yourKey": "e.g. [Selected option token]"
 }
 ```
 
