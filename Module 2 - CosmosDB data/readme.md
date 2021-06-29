@@ -237,14 +237,13 @@ Which would add a new document to CosmosDB with the corresponding product inform
 
     ```json
     ###
-
     POST http://localhost:7071/api/addProducts HTTP/1.1
     Content-Type: application/json
 
     {
-        "id": "1",
-        "flavor": "Rainbow Road",
-        "price-per-scoop": 3.99
+      "id": "1",
+      "flavor": "Rainbow Road",
+      "price-per-scoop": 3.99
     }
 
     ###
